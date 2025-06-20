@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录 - 您的应用名称</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            width: 900px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .left-panel {
+            flex: 1;
+            background: linear-gradient(to bottom right, #4776E6, #8E54E9);
+            color: white;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .left-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: 100% 100%;
+        }
+
+        .left-panel h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .left-panel p {
+            font-size: 18px;
+            line-height: 1.6;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .right-panel {
+            flex: 1;
+            padding: 60px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo i {
+            font-size: 48px;
+            color: #4776E6;
+            margin-bottom: 15px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            color: #333;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            border-color: #4776E6;
+            box-shadow: 0 0 0 3px rgba(71, 118, 230, 0.2);
+            outline: none;
+        }
+
+        .input-group input:focus + i {
+            color: #4776E6;
+        }
+
+        .options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+        }
+
+        .remember input {
+            margin-right: 8px;
+        }
+
+        .forgot {
+            color: #4776E6;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .forgot:hover {
+            color: #6a11cb;
+            text-decoration: underline;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(to right, #4776E6, #8E54E9);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 25px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 14px rgba(71, 118, 230, 0.3);
+        }
+
+        .social-login {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .social-login p {
+            position: relative;
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .social-login p::before,
+        .social-login p::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #ddd;
+        }
+
+        .social-login p::before {
+            left: 0;
+        }
+
+        .social-login p::after {
+            right: 0;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .social-icons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: #f5f7ff;
+            color: #555;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-icons a.facebook:hover {
+            background: #3b5998;
+            color: white;
+        }
+
+        .social-icons a.twitter:hover {
+            background: #1da1f2;
+            color: white;
+        }
+
+        .social-icons a.google:hover {
+            background: #db4437;
+            color: white;
+        }
+
+        .register {
+            text-align: center;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .register a {
+            color: #4776E6;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .register a:hover {
+            color: #6a11cb;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                width: 100%;
+                max-width: 500px;
+            }
+
+            .left-panel {
+                padding: 40px 20px;
+            }
+
+            .right-panel {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <h2>商师院考核系统</h2>
+            <p>登录您的账号以访问我们的独家内容和服务。我们很高兴再次见到您！</p>
+        </div>
+
+        <div class="right-panel">
+            <div class="form-container">
+                <div class="logo">
+                    <i class="fas fa-lock"></i>
+                    <h1>账号登录</h1>
+                </div>
+
+                <form id="loginForm" action="/polls/login/" method="post">{% csrf_token %}
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" name="username" id="username" placeholder="用户名或邮箱" required>
+                    </div>
+
+                    <div class="input-group">
+                        <i class="fas fa-key"></i>
+                        <input type="password" name="password" id="password" placeholder="密码" required>
+                    </div>
+
+                    <div class="options">
+                        <div class="remember">
+                            <input type="checkbox" id="remember">
+                            <label for="remember">记住我</label>
+                        </div>
+                        <a href="#" class="forgot">忘记密码?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login">登 录</button>
+                </form>
+
+                <div class="social-login">
+                    <p>或使用以下方式登录</p>
+                    <div class="social-icons">
+                        <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="google"><i class="fab fa-google"></i></a>
+                    </div>
+                </div>
+
+                <div class="register">
+                    <p>还没有账号? <a href="/polls/registeridx/">立即注册</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</body>
+</html>
