@@ -218,33 +218,6 @@
             flex: 1;
         }
 
-        .password-hints {
-            background: #f8f9fa;
-            border-radius: 8px;
-            padding: 12px 15px;
-            margin: 10px 0 20px;
-            font-size: 13px;
-            color: #666;
-            border: 1px solid #eee;
-        }
-
-        .password-hints ul {
-            padding-left: 20px;
-            margin: 8px 0 0;
-        }
-
-        .password-hints li {
-            margin-bottom: 5px;
-        }
-
-        .hint-valid {
-            color: #2ed573;
-        }
-
-        .hint-invalid {
-            color: #ff6b81;
-        }
-
         @media (max-width: 768px) {
             .container {
                 flex-direction: column;
@@ -264,6 +237,42 @@
                 flex-direction: column;
                 gap: 20px;
             }
+        }
+
+        /* 新增单位选择样式 */
+        .unit-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .unit-option {
+            flex: 1;
+            min-width: 120px;
+            padding: 10px 15px;
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .unit-option:hover {
+            background: #e9ecef;
+        }
+
+        .unit-option.selected {
+            background: #4776E6;
+            color: white;
+            border-color: #4776E6;
+        }
+
+        .unit-option i {
+            display: block;
+            font-size: 24px;
+            margin-bottom: 8px;
         }
     </style>
 </head>
@@ -286,23 +295,7 @@
                     <h1>创建新账户</h1>
                 </div>
 
-                <form id="registerForm">
-                    <div class="form-row">
-                        <div class="input-group">
-                            <i class="fas fa-user"></i>
-                            <input type="text" name="firstname" id="firstname" placeholder="名字" required>
-                        </div>
-                        <div class="input-group">
-                            <i class="fas fa-user"></i>
-                            <input type="text" name="lastname" id="lastname" placeholder="姓氏" required>
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <i class="fas fa-envelope"></i>
-                        <input type="email" name="email" id="email" placeholder="电子邮箱" required>
-                    </div>
-
+                <form id="registerForm1" action="/polls/register/" method="post"> {% csrf_token %}
                     <div class="input-group">
                         <i class="fas fa-id-card"></i>
                         <input type="text" name="username" id="username" placeholder="用户名" required>
@@ -316,28 +309,35 @@
                         </div>
                     </div>
 
-                    <div class="password-hints">
-                        <p>密码要求：</p>
-                        <ul>
-                            <li id="lengthHint" class="hint-invalid">至少8个字符</li>
-                            <li id="numberHint" class="hint-invalid">包含数字</li>
-                            <li id="specialHint" class="hint-invalid">包含特殊字符</li>
-                        </ul>
-                    </div>
-
                     <div class="input-group">
                         <i class="fas fa-key"></i>
                         <input type="password" name="confirmPassword" id="confirmPassword" placeholder="确认密码" required>
                     </div>
 
+                    <!-- 新增的用户单位字段 -->
                     <div class="input-group">
-                        <i class="fas fa-user-tag"></i>
-                        <select name="userType" id="userType" required>
-                            <option value="" disabled selected>选择用户类型</option>
-                            <option value="student">学生</option>
-                            <option value="teacher">教师</option>
-                            <option value="admin">管理员</option>
-                        </select>
+                        <i class="fas fa-building"></i>
+                        <input type="text" name="userUnit" id="userUnit" placeholder="用户单位" required>
+                    </div>
+
+                    <!-- 单位选择选项 -->
+                    <div class="unit-options">
+                        <div class="unit-option" data-unit="人事处">
+                            <i class="fas fa-graduation-cap"></i>
+                            人事处
+                        </div>
+                        <div class="unit-option" data-unit="科研处">
+                            <i class="fas fa-laptop-code"></i>
+                            科研处"
+                        </div>
+                        <div class="unit-option" data-unit="教务处">
+                            <i class="fas fa-book"></i>
+                            教务处
+                        </div>
+                        <div class="unit-option" data-unit="其他">
+                            <i class="fas fa-ellipsis-h"></i>
+                            其他
+                        </div>
                     </div>
 
                     <div class="terms">
@@ -360,34 +360,22 @@
         document.getElementById('password').addEventListener('input', function() {
             const password = this.value;
             const strengthBar = document.getElementById('passwordStrength');
-            const lengthHint = document.getElementById('lengthHint');
-            const numberHint = document.getElementById('numberHint');
-            const specialHint = document.getElementById('specialHint');
 
             let strength = 0;
 
             // 检查长度
             if (password.length >= 8) {
                 strength += 33;
-                lengthHint.className = 'hint-valid';
-            } else {
-                lengthHint.className = 'hint-invalid';
             }
 
             // 检查数字
             if (/\d/.test(password)) {
                 strength += 33;
-                numberHint.className = 'hint-valid';
-            } else {
-                numberHint.className = 'hint-invalid';
             }
 
             // 检查特殊字符
             if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
                 strength += 34;
-                specialHint.className = 'hint-valid';
-            } else {
-                specialHint.className = 'hint-invalid';
             }
 
             // 更新强度条
@@ -409,16 +397,37 @@
 
             const password = document.getElementById('password').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
+            const userUnit = document.getElementById('userUnit').value;
 
             if (password !== confirmPassword) {
                 alert('两次输入的密码不一致！');
                 return;
             }
 
+            if (!userUnit) {
+                alert('请填写用户单位！');
+                return;
+            }
+
             // 模拟注册成功
-            alert('注册成功！即将跳转到登录页面...');
+            alert(`注册成功！\n用户名: ${document.getElementById('username').value}\n用户单位: ${userUnit}\n即将跳转到登录页面...`);
             // 实际应用中这里会提交表单并重定向
             // window.location.href = 'login.html';
+        });
+
+        // 单位选择功能
+        const unitOptions = document.querySelectorAll('.unit-option');
+        unitOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // 移除之前的选择
+                unitOptions.forEach(opt => opt.classList.remove('selected'));
+
+                // 添加当前选择
+                this.classList.add('selected');
+
+                // 更新单位输入框
+                document.getElementById('userUnit').value = this.dataset.unit;
+            });
         });
     </script>
 </body>

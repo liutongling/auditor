@@ -6,6 +6,7 @@ from django.db import models
 
 class Auditor(models.Model):
     auditorName = models.CharField(max_length=20)
+    auditorUnit = models.CharField(max_length=50,default="null")
     Academypassword = models.IntegerField(default=0)
     AcademyNum = models.IntegerField(default=0)
 
