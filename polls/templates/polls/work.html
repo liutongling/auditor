@@ -483,12 +483,12 @@
                     <i class="fas fa-user-tie"></i>
                 </div>
                 <div class="user-details">
-                    <h2>张审核员</h2>
-                    <p>用户单位：教育质量监督局</p>
+                    <h2>{{ username }}</h2>
+                    <p>用户单位：{{ userUnit }}</p>
                 </div>
             </div>
             <div class="system-title">
-                <h1>学院管理系统</h1>
+                <h1>商丘师范学院考核管理系统</h1>
                 <p>审核员工作台</p>
             </div>
         </header>
@@ -709,7 +709,7 @@
                     添加管理学院
                 </div>
                 <div class="card-body">
-                    <form class="add-form" id="addAcademyForm">
+                    <form class="add-form" action="/polls/Academy/" method="post" id="addAcademyForm1">{% csrf_token %}
                         <div class="form-group">
                             <label for="academyName">
                                 <i class="fas fa-university"></i> 学院名称

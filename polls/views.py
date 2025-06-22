@@ -3,7 +3,9 @@ from django.shortcuts import render
 # Create your views here.
 from django.http import HttpResponse
 from django.template import loader
-from .models import Auditor
+from .models import Auditor, Academy
+
+
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
@@ -22,6 +24,8 @@ def login(request):
             # print(type(user[0].Academypassword)) 查看数据类型
             if user[0].Academypassword == int(password):
                 result = "success"
+                userUnit = user[0].auditorUnit
+                request.session['username'] = username
                 return render(request, 'polls/work.html', locals())
             else:
                 return render(request, 'polls/g.html', locals())
@@ -48,7 +52,19 @@ def register(request):
         return render(request, 'polls/g.html', locals())
     return render(request, 'polls/g.html', locals())
 
-
+def AcademyAdd(request):
+    print("come in")
+    username = 'no username'
+    if True:
+        academyName = request.POST.get('academyName')
+        print(academyName)
+        username = request.session.get('username', 'no')
+        addAuditor = Auditor.objects.filter(auditorName=username)
+        Academy(Academyname=academyName, auditorName=addAuditor[0]).save()
+        print(username)
+        return render(request, 'polls/g.html', locals())
+    else:
+        return render(request, 'polls/g.html', locals())
 def g(request):
     if request.method == 'GET':
         g = request.GET.get('g')
