@@ -14,4 +14,6 @@ class Auditor(models.Model):
 class Academy(models.Model):
     Academyname = models.CharField(max_length=50)
     auditorName = models.ForeignKey(Auditor, on_delete=models.SET_NULL,null=True,) # 当审核人被删除之后学院设置为Null
+    responsible1 = models.CharField(max_length=50,null=True)
+    responsibleTel = models.CharField(max_length=50,null=True)
     NumPerson = models.IntegerField(default=0)

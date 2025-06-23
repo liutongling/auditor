@@ -14,6 +14,10 @@ def detail(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+# 查询当前审核人员管理学院
+def findAcademy(username):
+    return Academy.objects.filter(auditorName=username)
+
 def login(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
@@ -26,6 +30,9 @@ def login(request):
                 result = "success"
                 userUnit = user[0].auditorUnit
                 request.session['username'] = username
+                latest_question_list = findAcademy(user[0].id)
+
+                question_len = len(latest_question_list)
                 return render(request, 'polls/work.html', locals())
             else:
                 return render(request, 'polls/g.html', locals())
@@ -51,16 +58,18 @@ def register(request):
         result = "Success"
         return render(request, 'polls/g.html', locals())
     return render(request, 'polls/g.html', locals())
-
+# 这个函数是将通过前端添加学院将学院加入到审核人员
 def AcademyAdd(request):
     print("come in")
     username = 'no username'
     if True:
         academyName = request.POST.get('academyName')
+        responsible = request.POST.get('academyDean')
+        responsibleTel = request.POST.get('academyPhone')
         print(academyName)
-        username = request.session.get('username', 'no')
+        username = request.session.get('username', 'no')# 将登录信息保存到session中
         addAuditor = Auditor.objects.filter(auditorName=username)
-        Academy(Academyname=academyName, auditorName=addAuditor[0]).save()
+        Academy(Academyname=academyName,auditorName=addAuditor[0],responsible1=responsible,responsibleTel=responsibleTel).save()
         print(username)
         return render(request, 'polls/g.html', locals())
     else:
