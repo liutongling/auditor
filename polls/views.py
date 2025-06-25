@@ -29,9 +29,10 @@ def login(request):
             if user[0].Academypassword == int(password):
                 result = "success"
                 userUnit = user[0].auditorUnit
+                # 将登录信息保存到session中
                 request.session['username'] = username
                 latest_question_list = findAcademy(user[0].id)
-
+                #从数据中获取审核的学院数
                 question_len = len(latest_question_list)
                 return render(request, 'polls/work.html', locals())
             else:

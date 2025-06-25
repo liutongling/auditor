@@ -685,10 +685,12 @@
             </div>
             <div class="card-body">
                 <div class="academies-container">
+                    <!-- 后端传过来一个字典数据，然后使用for遍历所有的学院 -->
                     {% if latest_question_list %}
                         {% for question in latest_question_list %}
-                            <div class="academy-card">
-                                <h3>{{ question.Academyname }}</h3>
+                            <!-- 学院卡片 1 -->
+                            <div class="academy-card" data-academy="文学院">
+                                <h3 class="academy-name">{{ question.Academyname }}</h3>
                                 <div class="academy-info">
                                     <div class="info-item">
                                         <i class="fas fa-user-graduate"></i>
@@ -696,7 +698,7 @@
                                     </div>
                                     <div class="info-item">
                                         <i class="fas fa-phone"></i>
-                                        <span>联系电话: {{ question.responsibleTel }}</span>
+                                        <span>联系电话:  {{ question.responsibleTel }}</span>
                                     </div>
                                     <div class="academy-status status-pending">
                                         <i class="fas fa-clock"></i>
@@ -704,19 +706,21 @@
                                     </div>
                                 </div>
                                 <div class="academy-actions-bottom">
-                                    <button class="edit-btn" onclick="openEditModal('文学院')">
-                                        <i class="fas fa-edit"></i> 查看
+                                    <button class="action-btn" data-action="view">
+                                        <i class="fas fa-eye"></i> 查看
                                     </button>
-                                    <button class="edit-btn" onclick="openEditModal('文学院')">
+                                    <button class="action-btn" data-action="edit">
                                         <i class="fas fa-edit"></i> 修改
                                     </button>
-                                    <button class="delete-btn" onclick="openDeleteModal('文学院')">
+                                    <button class="action-btn" data-action="delete">
                                         <i class="fas fa-trash-alt"></i> 删除
                                     </button>
                                 </div>
                             </div>
                         {% endfor %}
                     {% endif %}
+
+
                 </div>
             </div>
         </div>
@@ -749,7 +753,7 @@
                                 <button class="edit-btn" title="修改">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="delete-btn" title="删除" onclick="openDeleteModal('法学院')">
+                                <button class="delete-btn" title="删除" data-academy="法学院">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -767,7 +771,7 @@
                                 <button class="edit-btn" title="修改">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="delete-btn" title="删除" onclick="openDeleteModal('工程学院')">
+                                <button class="delete-btn" title="删除" data-academy="工程学院">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -785,7 +789,7 @@
                                 <button class="edit-btn" title="修改">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="delete-btn" title="删除" onclick="openDeleteModal('外国语学院')">
+                                <button class="delete-btn" title="删除" data-academy="外国语学院">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -803,7 +807,7 @@
                                 <button class="edit-btn" title="修改">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="delete-btn" title="删除" onclick="openDeleteModal('教育学院')">
+                                <button class="delete-btn" title="删除" data-academy="教育学院">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -821,7 +825,7 @@
                                 <button class="edit-btn" title="修改">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="delete-btn" title="删除" onclick="openDeleteModal('体育学院')">
+                                <button class="delete-btn" title="删除" data-academy="体育学院">
                                     <i class="fas fa-trash-alt"></i>
                                 </button>
                             </div>
@@ -883,7 +887,7 @@
             </div>
             <div class="modal-footer">
                 <button class="modal-btn cancel" onclick="closeModal('deleteModal')">取消</button>
-                <button class="modal-btn confirm" onclick="deleteAcademy()">确认删除</button>
+                <button class="modal-btn confirm" id="confirmDeleteBtn">确认删除</button>
             </div>
         </div>
     </div>
@@ -925,6 +929,9 @@
     </div>
 
     <script>
+        // 存储当前操作的学院名称
+        let currentAcademy = null;
+
         // 搜索功能
         document.getElementById('searchBtn').addEventListener('click', function() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
@@ -981,7 +988,7 @@
                     <button class="edit-btn" title="修改">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="delete-btn" title="删除" onclick="openDeleteModal('${academyName}')">
+                    <button class="delete-btn" title="删除" data-academy="${academyName}">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </div>
@@ -1001,6 +1008,11 @@
 
             newItem.querySelector('.edit-btn').addEventListener('click', function() {
                 openEditModal(academyName);
+            });
+
+            // 绑定删除事件
+            newItem.querySelector('.delete-btn').addEventListener('click', function() {
+                openDeleteModal(academyName);
             });
         });
 
@@ -1029,6 +1041,14 @@
             });
         });
 
+        // 绑定删除按钮事件
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const academyName = this.getAttribute('data-academy');
+                openDeleteModal(academyName);
+            });
+        });
+
         // 搜索框回车事件
         document.getElementById('searchInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
@@ -1036,8 +1056,30 @@
             }
         });
 
+        // 监听学院卡片的操作按钮
+        document.addEventListener('click', function(e) {
+            if (e.target.closest('.action-btn')) {
+                const btn = e.target.closest('.action-btn');
+                const card = btn.closest('.academy-card');
+                const academyName = card.querySelector('.academy-name').textContent;
+
+                switch(btn.getAttribute('data-action')) {
+                    case 'view':
+                        alert(`查看学院: ${academyName}`);
+                        break;
+                    case 'edit':
+                        openEditModal(academyName);
+                        break;
+                    case 'delete':
+                        openDeleteModal(academyName);
+                        break;
+                }
+            }
+        });
+
         // 删除学院功能
         function openDeleteModal(academyName) {
+            currentAcademy = academyName;
             document.getElementById('academyToDelete').textContent = academyName;
             document.getElementById('deleteModal').style.display = 'flex';
         }
@@ -1046,22 +1088,23 @@
             document.getElementById(modalId).style.display = 'none';
         }
 
-        function deleteAcademy() {
-            const academyName = document.getElementById('academyToDelete').textContent;
-            alert(`学院 "${academyName}" 已成功删除`);
-            closeModal('deleteModal');
+        // 确认删除按钮事件
+        document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+            if (currentAcademy) {
+                alert(`学院 "${currentAcademy}" 已成功删除`);
+                closeModal('deleteModal');
 
-            // 在实际应用中，这里会发送AJAX请求删除后端数据
-            // 这里只做前端演示，不实际删除DOM元素
-        }
+                // 在实际应用中，这里会发送AJAX请求删除后端数据
+                // 这里只做前端演示，不实际删除DOM元素
+            }
+        });
 
         // 修改学院功能
         function openEditModal(academyName) {
-            // 在实际应用中，这里会从后端获取学院数据
-            // 这里使用模拟数据
+            // 填充表单数据
             document.getElementById('editAcademyName').value = academyName;
-            document.getElementById('editAcademyDean').value = academyName + '院长';
-            document.getElementById('editAcademyPhone').value = '138' + Math.floor(10000000 + Math.random() * 90000000);
+            document.getElementById('editAcademyDean').value = "负责人姓名";
+            document.getElementById('editAcademyPhone').value = "13800138000";
 
             document.getElementById('editModal').style.display = 'flex';
         }
