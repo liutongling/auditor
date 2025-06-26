@@ -694,11 +694,13 @@
                                 <div class="academy-info">
                                     <div class="info-item">
                                         <i class="fas fa-user-graduate"></i>
-                                        <span>学院负责人：{{ question.responsible1 }}</span>
+                                        <span>学院负责人：</span>
+                                        <span class="academyAu">{{ question.responsible1 }}</span>
                                     </div>
                                     <div class="info-item">
                                         <i class="fas fa-phone"></i>
-                                        <span>联系电话:  {{ question.responsibleTel }}</span>
+                                        <span>联系电话：</span>
+                                        <span class="academyPh">{{ question.responsibleTel }}</span>
                                     </div>
                                     <div class="academy-status status-pending">
                                         <i class="fas fa-clock"></i>
@@ -719,8 +721,6 @@
                             </div>
                         {% endfor %}
                     {% endif %}
-
-
                 </div>
             </div>
         </div>
@@ -741,95 +741,27 @@
                     </div>
 
                     <div class="academy-list" id="academyList">
-                        <div class="academy-item">
-                            <span class="academy-name">法学院</span>
-                            <div class="academy-actions">
-                                <button class="detail-btn" title="查看详情">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="audit-btn" title="审核">
-                                    <i class="fas fa-clipboard-check"></i>
-                                </button>
-                                <button class="edit-btn" title="修改">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn" title="删除" data-academy="法学院">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="academy-item">
-                            <span class="academy-name">工程学院</span>
-                            <div class="academy-actions">
-                                <button class="detail-btn" title="查看详情">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="audit-btn" title="审核">
-                                    <i class="fas fa-clipboard-check"></i>
-                                </button>
-                                <button class="edit-btn" title="修改">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn" title="删除" data-academy="工程学院">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="academy-item">
-                            <span class="academy-name">外国语学院</span>
-                            <div class="academy-actions">
-                                <button class="detail-btn" title="查看详情">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="audit-btn" title="审核">
-                                    <i class="fas fa-clipboard-check"></i>
-                                </button>
-                                <button class="edit-btn" title="修改">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn" title="删除" data-academy="外国语学院">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="academy-item">
-                            <span class="academy-name">教育学院</span>
-                            <div class="academy-actions">
-                                <button class="detail-btn" title="查看详情">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="audit-btn" title="审核">
-                                    <i class="fas fa-clipboard-check"></i>
-                                </button>
-                                <button class="edit-btn" title="修改">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn" title="删除" data-academy="教育学院">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </div>
-
-                        <div class="academy-item">
-                            <span class="academy-name">体育学院</span>
-                            <div class="academy-actions">
-                                <button class="detail-btn" title="查看详情">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="audit-btn" title="审核">
-                                    <i class="fas fa-clipboard-check"></i>
-                                </button>
-                                <button class="edit-btn" title="修改">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="delete-btn" title="删除" data-academy="体育学院">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </div>
-                        </div>
+                        {% if acad %}
+                            {% for a in acad %}
+                                <div class="academy-item">
+                                    <span class="academy-name1">{{ a.Academyname }}</span>
+                                    <div class="academy-actions">
+                                        <button class="detail-btn" title="查看详情">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="audit-btn" title="审核">
+                                            <i class="fas fa-clipboard-check"></i>
+                                        </button>
+                                        <button class="edit-btn1" title="修改">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="delete-btn" title="删除" data-academy="教育学院">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -841,31 +773,8 @@
                     添加管理学院
                 </div>
                 <div class="card-body">
-                    <form class="add-form" action="/polls/Academy/" method="post" id="addAcademyForm1"> {% csrf_token %}
-                        <div class="form-group">
-                            <label for="academyName">
-                                <i class="fas fa-university"></i> 学院名称
-                            </label>
-                            <input type="text" id="academyName" name="academyName" placeholder="请输入学院全称" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="academyDean">
-                                <i class="fas fa-user-graduate"></i> 学院负责人
-                            </label>
-                            <input type="text" id="academyDean" name="academyDean" placeholder="请输入院负责人姓名" required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="academyPhone">
-                                <i class="fas fa-phone"></i> 联系电话
-                            </label>
-                            <input type="text" id="academyPhone" name="academyPhone" placeholder="请输入联系电话">
-                        </div>
-
-                        <button type="submit" class="submit-btn">
-                            <i class="fas fa-save"></i> 添加学院
-                        </button>
+                    <form class="add-form" id="addAcademyForm">
+                        <p> <a href="/polls/registeridx/">查看数据库中的学院</a></p>
                     </form>
                 </div>
             </div>
@@ -879,18 +788,49 @@
                 <i class="fas fa-exclamation-triangle"></i>
                 删除学院确认
             </div>
-            <div class="modal-body">
-                <p>确定要删除 <strong id="academyToDelete">学院名称</strong> 吗？</p>
-                <p class="warning-text" style="color: var(--danger); margin-top: 15px; font-weight: 500;">
-                    <i class="fas fa-exclamation-circle"></i> 警告：此操作将永久删除该学院所有相关数据，且不可恢复！
-                </p>
-            </div>
-            <div class="modal-footer">
-                <button class="modal-btn cancel" onclick="closeModal('deleteModal')">取消</button>
-                <button class="modal-btn confirm" id="confirmDeleteBtn">确认删除</button>
-            </div>
+            <form id ='test' action="/polls/delete/" method="post">{% csrf_token %}
+
+                <div class="modal-body">
+                    <input type="text" id="academyId" name="academyId" value="yes" hidden>
+                    <p>确定要删除 <strong id="academyToDelete" name ='acadname'>学院名称</strong> 吗？</p>
+                    <p class="warning-text" style="color: var(--danger); margin-top: 15px; font-weight: 500;">
+                        <i class="fas fa-exclamation-circle"></i> 警告：此操作将永久删除该学院所有相关数据，且不可恢复！
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn cancel" onclick="closeModal('deleteModal')">取消</button>
+                    <button type="submit" class="modal-btn confirm1" id="confirmDeleteBtn1">确认删除</button>
+                </div>
+
+            </form>
         </div>
     </div>
+    <!-- 添加确认模态框 -->
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle"></i>
+                添加学院确认
+            </div>
+            <form id ='test' action="/polls/Academy/" method="post">{% csrf_token %}
+
+                <div class="modal-body">
+                    <input type="text" id="academyId1" name="academyId1" value="yes" hidden>
+                    <p>确定要添加 <strong id="academyAdd" name ='acadname'>学院名称</strong> 吗？</p>
+                    <p class="warning-text" style="color: var(--danger); margin-top: 15px; font-weight: 500;">
+                        <i class="fas fa-exclamation-circle"></i> 友情提示：填加之后可以在上方页面删除！
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="modal-btn cancel" onclick="closeModal('deleteModal')">取消</button>
+                    <button type="submit" class="modal-btn confirm1" id="confirmDeleteBtn1">确认添加</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
 
     <!-- 修改学院模态框 -->
     <div class="modal" id="editModal">
@@ -1062,18 +1002,27 @@
                 const btn = e.target.closest('.action-btn');
                 const card = btn.closest('.academy-card');
                 const academyName = card.querySelector('.academy-name').textContent;
-
+                const academyAu = card.querySelector('.academyAu').textContent;
+                const academyPh = card.querySelector('.academyPh').textContent;
                 switch(btn.getAttribute('data-action')) {
                     case 'view':
                         alert(`查看学院: ${academyName}`);
                         break;
                     case 'edit':
-                        openEditModal(academyName);
+                        openEditModal(academyName,academyAu,academyPh);
                         break;
                     case 'delete':
                         openDeleteModal(academyName);
                         break;
                 }
+            }
+            if (e.target.closest('.edit-btn1')){
+
+                const btn = e.target.closest('.edit-btn1')
+                const card = btn.closest('.academy-item')
+                const academyn = card.querySelector('.academy-name1').textContent;
+
+                openAddModal(academyn);
             }
         });
 
@@ -1081,9 +1030,16 @@
         function openDeleteModal(academyName) {
             currentAcademy = academyName;
             document.getElementById('academyToDelete').textContent = academyName;
+            document.getElementById('academyId').value = academyName;
             document.getElementById('deleteModal').style.display = 'flex';
         }
+                // 删除学院功能
+        function openAddModal(academyName) {
 
+            document.getElementById('academyAdd').textContent = academyName;
+            document.getElementById('academyId1').value = academyName;
+            document.getElementById('addModal').style.display = 'flex';
+        }
         function closeModal(modalId) {
             document.getElementById(modalId).style.display = 'none';
         }
@@ -1100,11 +1056,11 @@
         });
 
         // 修改学院功能
-        function openEditModal(academyName) {
+        function openEditModal(academyName,academyAu,academyPh) {
             // 填充表单数据
             document.getElementById('editAcademyName').value = academyName;
-            document.getElementById('editAcademyDean').value = "负责人姓名";
-            document.getElementById('editAcademyPhone').value = "13800138000";
+            document.getElementById('editAcademyDean').value = academyAu;
+            document.getElementById('editAcademyPhone').value = academyPh;
 
             document.getElementById('editModal').style.display = 'flex';
         }

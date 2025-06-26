@@ -32,6 +32,7 @@ def login(request):
                 # 将登录信息保存到session中
                 request.session['username'] = username
                 latest_question_list = findAcademy(user[0].id)
+                acad = Academy.objects.filter(auditorName_id=None)
                 #从数据中获取审核的学院数
                 question_len = len(latest_question_list)
                 return render(request, 'polls/work.html', locals())
@@ -64,17 +65,27 @@ def AcademyAdd(request):
     print("come in")
     username = 'no username'
     if True:
-        academyName = request.POST.get('academyName')
-        responsible = request.POST.get('academyDean')
-        responsibleTel = request.POST.get('academyPhone')
+        academyName = request.POST.get('academyId1')
         print(academyName)
+        print("*****")
         username = request.session.get('username', 'no')# 将登录信息保存到session中
         addAuditor = Auditor.objects.filter(auditorName=username)
-        Academy(Academyname=academyName,auditorName=addAuditor[0],responsible1=responsible,responsibleTel=responsibleTel).save()
+        Academy.objects.filter(Academyname=academyName).update(auditorName=addAuditor[0])
+        #Academy(Academyname=academyName,auditorName=addAuditor[0],responsible1=responsible,responsibleTel=responsibleTel).save()
         print(username)
         return render(request, 'polls/g.html', locals())
     else:
         return render(request, 'polls/g.html', locals())
+def delete(request):
+    if request.method == 'POST':
+        g = request.POST.get('academyId')
+
+        s = Academy.objects.filter(Academyname=g).update(auditorName_id=None)
+
+        print(s)
+        return render(request, 'polls/g.html', locals())
+    else:
+        return HttpResponse('<UNK>')
 def g(request):
     if request.method == 'GET':
         g = request.GET.get('g')
