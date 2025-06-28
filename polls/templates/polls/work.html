@@ -1006,7 +1006,7 @@
                 const academyPh = card.querySelector('.academyPh').textContent;
                 switch(btn.getAttribute('data-action')) {
                     case 'view':
-                        alert(`查看学院: ${academyName}`);
+                        window.location.href=`/polls/view/?acad=${academyName}&acadA=${academyAu}&Ph=${academyPh}`;
                         break;
                     case 'edit':
                         openEditModal(academyName,academyAu,academyPh);

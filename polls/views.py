@@ -31,6 +31,7 @@ def login(request):
                 userUnit = user[0].auditorUnit
                 # 将登录信息保存到session中
                 request.session['username'] = username
+                request.session['userUnit'] = userUnit
                 latest_question_list = findAcademy(user[0].id)
                 acad = Academy.objects.filter(auditorName_id=None)
                 #从数据中获取审核的学院数
@@ -92,3 +93,21 @@ def g(request):
         return render(request, 'polls/g.html', locals())
     else:
         return HttpResponse('<UNK>')
+
+def view(request):
+    # 通过session获取当前的登录信息
+    username = request.session.get('username', 'no')
+    userUnit = request.session.get('userUnit')
+    # 这里实现了一个需求，就是通过点击一个div方块，需要将该div方块的数据传递到下一个页面中，实现这个需要使用一个get请求，传递到下一个页面
+    acad = request.GET.get('acad')
+    Au = request.GET.get('acadA')
+    ph = request.GET.get('Ph')
+    print("*******")
+    print(Au)
+    print("*******")
+    return render(request, 'polls/view.html', locals())
+
+
+# 像数据库里面添加审核成员
+def addP(request):
+    return render(request,'polls/addPerson.html',locals())

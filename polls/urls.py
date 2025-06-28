@@ -10,5 +10,8 @@ urlpatterns = [
     path("register/", views.register, name="register"),
     path("Academy/", views.AcademyAdd, name="Academy"),
     path('g/', views.g),
-    path('delete/',views.delete,name="delete")
+    path('delete/',views.delete,name="delete"),
+    # 访问查看成员资料页面
+    path('view/',views.view,name="view"),
+    path('addP/',views.addP,name="addP"),
 ]
